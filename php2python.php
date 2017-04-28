@@ -1,6 +1,11 @@
-<?php  
-    session_start();  
-    $_SESSION["userid"]="tmp";  
+<?php
+//    session_start();
+//    print(file_get_contents("php://input"));
+//    print_r($_POST);
+//    $_FILES = file_get_contents("php://input");
+    $_SESSION["userid"]="tmp";
+    $path = getcwd();
+    $path = $path . "/";
     if (1)//这个地方可以填写上传文件的限制，比如格式大小要求等，为了方便测试，这里没有写上传限制。  
     {  
         if ($_FILES["file"]["error"] > 0)  
@@ -28,12 +33,12 @@
             $newfilename_="tmp2";//自定义文件名（测试的时候中文名会操作失败）
             $_FILES["file_"]["name"]=$newfilename_.".".$array_[1];
 
-            if (!is_dir("/var/www/html/".$_SESSION["userid"]))//当路径不穿在  
+            if (!is_dir($path.$_SESSION["userid"]))//当路径不穿在
             {  
-                mkdir("/var/www/html/".$_SESSION["userid"]);//创建路径  
+                mkdir($path.$_SESSION["userid"]);//创建路径
             }  
-            $url="/var/www/html/".$_SESSION["userid"]."/";//记录路径
-            $url_="/var/www/html/".$_SESSION["userid"]."/";//记录路径
+            $url=$path.$_SESSION["userid"]."/";//记录路径
+            $url_=$path.$_SESSION["userid"]."/";//记录路径
             if (file_exists($url.$_FILES["file"]["name"]))//当文件存在  
             {  
                 $url=$url.$_FILES["file"]["name"];
@@ -43,7 +48,7 @@
                 if(!move_uploaded_file($_FILES["file_"]["tmp_name"],$url_))
                     {echo 'y';};
                 echo $_FILES["file"]["name"] . " already exists. ";  
-
+                
             }  
             else//当文件不存在  
             {  
@@ -63,13 +68,18 @@
     }
 
 
-shell_exec('python /var/www/html/python_scripts/SIFTprototype.py /var/www/html/tmp/tmp1.jpeg /var/www/html/tmp/tmp2.jpeg');
-?>  
+//shell_exec('python /Users/zz/Desktop/python/SIFTprototype.py /Applications/XAMPP/xamppfiles/htdocs/dashboard/php/tmp/tmp1.jpeg  /Applications/XAMPP/xamppfiles/htdocs/dashboard/php/tmp/tmp2.jpeg ');
+// $out = shell_exec('python /Users/zz/Desktop/python/phptest.py');
+// print_r($out);
+
+    exec("python /Users/zz/Desktop/python/SIFTprototype.py /Applications/XAMPP/xamppfiles/htdocs/dashboard/php/tmp/tmp1.jpeg /Applications/XAMPP/xamppfiles/htdocs/dashboard/php/tmp/tmp2.jpeg");
+    
+?>
+
+<html>
+<body>
+    <img src="tmp/tmp3.jpeg">
+</body>
+</html>
   
-<html>  
-<body>  
-    <br><br>  
-    <img src="<?php echo "tmp/";?>">
-    <img src="<?php echo "tmp/";?>">
-</body>  
-</html>  
+
